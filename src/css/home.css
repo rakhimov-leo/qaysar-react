@@ -52,7 +52,10 @@
   width: 100%;
   height: 580px;
   display: flex;
-  background: #f8f8ff;
+  background: url("/public/img/Uzbek_Korean_Cultural_Friendship.png");
+  background-size: cover;
+  margin-bottom: 20px;
+  background-position: 0ex;
 }
 
 .homepage .popular-dishes-frame .popular-sction {
@@ -60,6 +63,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  /* background: url("/public/img/Uzbek_Korean_Cultural_Friendship.png");
+  background-size: cover;
+  margin-bottom: 20px;
+  background-position: 0ex; */
 }
 
 .homepage .popular-dishes-frame .popular-sction .category-title {
@@ -71,6 +79,8 @@
   line-height: normal;
   letter-spacing: 1.44px;
   color: #000;
+  background-color: hwb(52 32% 2%);
+  border-radius: 15px;
 }
 
 .homepage .popular-dishes-frame .cards-frame {
@@ -88,11 +98,8 @@
 }
 
 .homepage .popular-dishes-frame .cards-frame .card .card-cover {
-  background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0) 200px
-    ),
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 200px),
     linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0) 300px);
 }
 .homepage .popular-dishes-frame .no-data {
