@@ -29,6 +29,28 @@
   font-style: normal;
   font-weight: 200;
   line-height: normal;
+
+  /* animation qo'shildi */
+  animation: wobble 2.5s ease-in-out infinite;
+  text-shadow: 0 0 20px #ffffff;
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-8px) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(8px) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-6px) rotate(-1deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
 }
 
 .home-navbar .navbar-container .menu .links {
@@ -96,21 +118,24 @@
 }
 
 .home-navbar .navbar-container .header-frame .detail .head-main-txt {
-  width: 300px;
-  height: 80px;
+  width: 211px;
+  height: 45px;
   margin-top: 110px;
   font-family: "Roboto Serif";
   font-size: 40px;
   font-style: normal;
-  font-weight: 650;
+  font-weight: 300;
   line-height: normal;
   letter-spacing: -0.75px;
   color: #ffffff;
+  background-color: #ef9415;
+  border-radius: 100px;
 }
 
 .home-navbar .navbar-container .header-frame .detail .wel-txt {
-  width: 510px;
+  width: 295px;
   height: 42px;
+  margin-top: 30px;
   font-family: "Roboto Serif";
   font-size: 36px;
   font-style: normal;
@@ -118,6 +143,8 @@
   line-height: normal;
   letter-spacing: -0.54px;
   color: #ffffff;
+  background-color: #ef9415;
+  border-radius: 60px;
 }
 
 .home-navbar .navbar-container .header-frame .detail .srvice-txt {
@@ -130,7 +157,10 @@
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.3px;
-  color: #d5d5d5;
+  color: #ffffff;
+  background-color: #ef9415;
+  background-position: 40px;
+  border-radius: 50px;
 }
 
 .home-navbar .navbar-container .detail .signup {
@@ -163,8 +193,25 @@
   background: url("/public/img/6.png");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: -15%;
   color: #ef9415;
-  filter: invert(25%);
+  filter: invert(10%);
+
+  /* --- Animation qo'shildi --- */
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: logoEntrance 1s ease-out forwards;
+}
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* other nav */
@@ -189,8 +236,37 @@
 }
 
 .other-navbar .navbar-container .menu .brand-logo {
-  width: 125px;
-  height: 30px;
+  width: 209px;
+  height: 175px;
+  margin-top: 140px;
+  color: #f3f3f3;
+
+  font-size: 300px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+
+  /* animation qo'shildi */
+  animation: wobble 2.5s ease-in-out infinite;
+  text-shadow: 0 0 20px #ffffff;
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-8px) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(8px) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-6px) rotate(-1deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
 }
 
 .other-navbar .navbar-container .menu .links {
