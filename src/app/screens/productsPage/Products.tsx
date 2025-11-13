@@ -321,19 +321,22 @@ export default function Products(props: ProductsProps) {
       <div className={"brands-logo"}>
         <Container>
           <Stack className="logo-frame">
-            <Box className="logo-text">Our Family Brands</Box>
+            <Box className="logo-text"> Brands</Box>
             <Stack className="image-frame" direction={"row"}>
               <Box className="image-shadow">
-                <img src="/img/gurme.webp" alt="Gurme" />
+                <img src="/img/user-bg.png" alt="Gurme" />
               </Box>
               <Box className="image-shadow">
-                <img src="/img/seafood.webp" alt="Seafood" />
+                <img src="/img/Uzbek_Kitchen_Joy.png" alt="Seafood" />
               </Box>
               <Box className="image-shadow">
-                <img src="/img/sweets.webp" alt="Sweets" />
+                <img src="/img/Uzbek_Kitchen_Anime_Boys.png" alt="Sweets" />
               </Box>
               <Box className="image-shadow">
-                <img src="/img/doner.webp" alt="Doner" />
+                <img
+                  src="/img/Uzbek_Korean_Cultural_Friendship.png"
+                  alt="Doner"
+                />
               </Box>
             </Stack>
           </Stack>

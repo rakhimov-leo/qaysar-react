@@ -17,15 +17,14 @@ import { ProductCollection } from "../../../lib/enums/product.enum";
 
 // ** REDUX SLICE & SELECTOR  **//
 const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
-   newDishes,
-  }));
+  newDishes,
+}));
 
 export default function NewDishes() {
-  
   const { newDishes } = useSelector(newDishesRetriever);
-    
-    console.log("newDishes:", newDishes);
-  
+
+  console.log("newDishes:", newDishes);
+
   return (
     <div className={"new-products-frame"}>
       <Container>
@@ -36,11 +35,16 @@ export default function NewDishes() {
               {newDishes.length !== 0 ? (
                 newDishes.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  const sizeVolme = product.productCollection === ProductCollection.DRINK 
-                  ? product.productVolume + "l" 
-                  : product.productSize + " size";
+                  const sizeVolme =
+                    product.productCollection === ProductCollection.DRINK
+                      ? product.productVolume + "l"
+                      : product.productSize + " size";
                   return (
-                    <Card key={product._id} variant="outlined" className={"card"}>
+                    <Card
+                      key={product._id}
+                      variant="outlined"
+                      className={"card"}
+                    >
                       <CardOverflow>
                         <div className="product-sale">{sizeVolme}</div>
                         <AspectRatio ratio="1">
@@ -54,7 +58,9 @@ export default function NewDishes() {
                               {product.productName}
                             </Typography>
                             <Divider width="2" height="24" bg="#d9d9d9" />
-                            <Typography className={"price"}>${product.productPrice}</Typography>
+                            <Typography className={"price"}>
+                              ${product.productPrice}
+                            </Typography>
                           </Stack>
                           <Stack>
                             <Typography className={"views"}>

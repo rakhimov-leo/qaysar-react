@@ -72,15 +72,20 @@
 
 .homepage .popular-dishes-frame .popular-sction .category-title {
   text-align: center;
-  font-family: "Roboto Serif";
-  font-size: 36px;
-  font-style: normal;
+  font-family: "Dancing Script", cursive; /* fallback */
   font-weight: 600;
-  line-height: normal;
+  font-size: 36px;
+  line-height: 1.2; /* normaldan yaxshiroq o‘qish uchun */
   letter-spacing: 1.44px;
-  color: #000;
-  background-color: hwb(52 32% 2%);
-  border-radius: 15px;
+  color: #ffffff; /* oq matn, fon bilan kontrast */
+
+  /* Yashil “Fresh Menu” gradient fon */
+  background: linear-gradient(135deg, #f6a77a, #f27c57);
+  border-radius: 25px; /* yumaloqroq burchaklar */
+  padding: 12px 28px; /* matn atrofida bo‘sh joy */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* yumshoq 3D effekt */
+
+  transform: translateY(-2px); /* matnni biroz ko‘tarib ko‘rsatish */
 }
 
 .homepage .popular-dishes-frame .cards-frame {
@@ -134,12 +139,20 @@
 }
 
 .homepage .new-products-frame .category-title {
-  font-family: "Dancing Script";
-  font-size: normal;
+  font-family: "Dancing Script", cursive;
   font-weight: 700;
   font-size: 36px;
   line-height: 43px;
-  color: #343434;
+  color: #ffffff; /* oq harflar, fon bilan kontrast uchun */
+
+  /* Issiq va yumshoq fon */
+  background: linear-gradient(135deg, #f6a77a, #f27c57);
+  /* yoki agar gradient yoqmasa: background-color: #f27c57; */
+
+  border-radius: 25px; /* yumaloqroq burchaklar oshxona effektiga mos */
+  padding: 12px 24px; /* matn atrofiga biroz joy */
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* yumshoq soyalar, “pishgan” effekt */
 }
 
 .homepage .new-products-frame .cards-frame {
@@ -234,22 +247,43 @@
 
 /** ADVERTISEMENT **/
 
-.homepage .ads-resturant-frame {
-  width: 100%;
-  height: 693px;
-  display: flex;
+.ads-resturant-frame {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  transform: perspective(0px);
-  box-shadow: -3px 0px 20px 14px #343434;
+  background: #000;
 }
 
-.homepage .ads-resturant-frame .ads-video {
-  width: 100%;
-  background: #0c0e12;
-  display: flex;
-  box-shadow: 0px -8px 90px rgb(215 215 255);
-  transform: scale(1.5);
+/* 🔹 Orqa fon videosi (blur bilan) */
+.homepage .ads-resturant-frame {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
+  background: #000;
+}
+
+.homepage .ads-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  filter: blur(40px) brightness(0.5);
+  z-index: 1;
+}
+
+.homepage .ads-video-main {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 /** ACTIVE USERS **/
@@ -257,7 +291,7 @@
   width: 100%;
   height: 550px;
   display: flex;
-  background: #f8f8ff;
+  background: #f8f8ff; /* orqa fonni engil qoldirdik */
 }
 
 .homepage .active-users-frame .main {
@@ -269,12 +303,20 @@
 .homepage .active-users-frame .main .category-title {
   margin-top: 36px;
   margin-bottom: 57px;
-  font-family: "Roboto Serif";
+  font-family: "Dancing Script", cursive; /* asl font saqlanadi */
   font-style: normal;
   font-weight: 600;
-  line-height: normal;
   font-size: 36px;
-  color: #343434;
+  line-height: 1.2;
+  text-align: center;
+  color: #ffffff; /* oq matn */
+
+  /* Fresh menu gradient va yumaloq burchak */
+  background: linear-gradient(135deg, #f6a77a, #f27c57);
+  border-radius: 25px;
+  padding: 12px 28px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .homepage .active-users-frame .cards-frame {
@@ -289,6 +331,21 @@
   height: 302px;
   padding: 0;
   overflow: hidden;
+  border-radius: 20px; /* yumaloq burchaklar */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* yumshoq 3D effekt */
+  background: linear-gradient(
+    145deg,
+    #eafaf1,
+    #d3f2e4
+  ); /* biroz fresh effect */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease; /* hover uchun */
+}
+
+.homepage .active-users-frame .cards-frame .user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .homepage .active-users-frame .cards-frame .user-image {
@@ -302,11 +359,13 @@
   font-weight: 600;
   font-size: 12px;
   text-align: center;
-  color: #000;
+  color: #343434; /* matn rangini biroz yumshatdik */
+  padding: 8px 0;
 }
 
 /** EVENTS **/
 
+/* ---------- Events Frame Container ---------- */
 .homepage .events-frame {
   width: 100%;
   height: 745px;
@@ -314,15 +373,31 @@
   display: flex;
 }
 
+/* ---------- Category Title ---------- */
 .homepage .events-frame .category-title {
-  font-family: "Dancing Script";
+  font-family: "Dancing Script", cursive;
   font-style: normal;
   font-weight: 700;
   font-size: 36px;
   line-height: 43px;
   padding-top: 20px;
+
+  /* Fresh Menu style */
+  color: #ffffff;
+  background: linear-gradient(135deg, #f6a77a, #f27c57);
+  border-radius: 25px;
+  padding: 12px 28px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+
+  /* Fade-in animation */
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInDown 1s ease forwards;
+  animation-delay: 0.3s;
 }
 
+/* ---------- Events Main ---------- */
 .homepage .events-frame .events-main {
   position: relative;
   width: 100%;
@@ -358,6 +433,7 @@
   display: flex;
 }
 
+/* ---------- Events Info ---------- */
 .homepage .events-frame .events-main .events-info {
   width: 100%;
   height: 100%;
@@ -373,27 +449,52 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  /* Hover animation */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
+.homepage .events-frame .events-info .events-info-frame:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Events Image ---------- */
 .homepage .events-frame .events-img {
   width: 100%;
   height: 100%;
   display: flex;
-  border-radius: 10px;
+  border-radius: 15px;
   background-size: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  /* Fade-in animation */
+  opacity: 0;
+  transform: scale(0.95);
+  animation: imageFadeIn 1s ease forwards;
+  animation-delay: 0.5s;
 }
 
+/* ---------- Events Description ---------- */
 .homepage .events-frame .events-desc {
   position: absolute;
   margin-bottom: 7px;
-  padding: 10px;
+  padding: 12px;
   display: flex;
   width: 90%;
   height: auto;
   bottom: 5px;
-  background: #f8f8ff;
-  box-shadow: 0px 40px 30px rgba(25, 25, 46, 0.04);
-  border-radius: 8px;
+  background: linear-gradient(135deg, #eafaf1, #d3f2e4);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+
+  /* Fade-up animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: descSlideUp 1s ease forwards;
+  animation-delay: 0.8s;
 }
 
 .homepage .events-frame .events-desc .events-bott {
@@ -429,15 +530,15 @@
 }
 
 .homepage .events-frame .event-organizator .spec-text-author {
-  font-family: "GT Walsheim Pro";
+  font-family: "GT Walsheim Pro", sans-serif;
   font-style: normal;
   line-height: 34px;
-  color: #140342;
+  color: #343434;
 }
 
 .homepage .events-frame .bott-left .text-desc {
   margin-top: 10px;
-  font-family: "GT Walsheim Pro";
+  font-family: "GT Walsheim Pro", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17px;
@@ -461,7 +562,7 @@
   flex-direction: row;
   width: auto;
   height: 100%;
-  font-family: "GT Walsheim Pro";
+  font-family: "GT Walsheim Pro", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -473,6 +574,7 @@
   margin-right: 10px;
 }
 
+/* ---------- Swiper Pagination ---------- */
 .homepage .events-frame .swiper-wrapper {
   display: flex;
   flex-direction: row;
@@ -489,6 +591,28 @@
 }
 
 .homepage .events-frame .swiper-pagination-bullet-active {
-  background: #343434;
+  background: #76c893;
   border-radius: 50%;
+}
+
+/* ---------- Keyframes Animations ---------- */
+@keyframes fadeInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes imageFadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes descSlideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
