@@ -23,14 +23,41 @@ export default function Footer() {
               <img width={"100px"} src={"/icons/4.png"} />
             </Box>
             <Box className={"foot-desc-txt"}>
-              Qaysar and Qaynar are brothers. They live in South Korea but they
-              are Uzbek! They manage a restaurnt named Qaysar and Qaysar!
+              Qaysar and Qaynar are brothers. They live in South Korea and they
+              are Uzbek! They manage a restaurant named Qaysar and Qaynar!
             </Box>
             <Box className="sns-context">
-              <img src={"/icons/facebook.svg"} />
-              <img src={"/icons/twitter.svg"} />
-              <img src={"/icons/instagram.svg"} />
-              <img src={"/icons/youtube.svg"} />
+              <a
+                href="https://www.facebook.com/qaysarqaynar.firidi"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={"/icons/facebook.svg"} alt="facebook" />
+              </a>
+
+              <a
+                href="https://www.tiktok.com/@qaysarqaynarhalalfood?is_from_webapp=1&sender_device=pc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={"/icons/tik-tok.png"} alt="twitter" />
+              </a>
+
+              <a
+                href="https://www.instagram.com/qaysar_qaynarr/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={"/icons/instagram.svg"} alt="instagram" />
+              </a>
+
+              <a
+                href="https://www.youtube.com/@qaysarqaynar8585"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={"/icons/youtube.svg"} alt="youtube" />
+              </a>
             </Box>
           </Stack>
           <Stack sx={{ ml: "288px" }} flexDirection={"row"}>
@@ -60,7 +87,7 @@ export default function Footer() {
                   </Box>
                   <Box className={"find-us"}>
                     <span>P.</span>
-                    <div>+8210 4554 7523</div>
+                    <div>+8210 4215 8090</div>
                   </Box>
                   <Box className={"find-us"}>
                     <span>E.</span>

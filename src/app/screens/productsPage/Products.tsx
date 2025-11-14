@@ -349,7 +349,7 @@ export default function Products(props: ProductsProps) {
             <Box className={"title"}>Our adress</Box>
             <iframe
               style={{ marginTop: "60px" }}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2412.000914375899!2d71.78244634472276!3d40.38823166536772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb834350f7164d%3A0x72d1aebea1fa66ca!2z0KHQv9C10YbQuNCw0LvQuNC30LjRgNC-0LLQsNC90L3QsNGPINCo0LrQvtC70LAg4oSWMg!5e0!3m2!1sru!2s!4v1753939840441!5m2!1sru!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3234.260931109345!2d127.13126137652989!3d35.842604872535645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357023003ce1eca1%3A0x77efbec3d7f13262!2sQAYSAR%20QAYNAR%20HALAL%20FOOD!5e0!3m2!1sen!2skr!4v1763129737573!5m2!1sen!2skr"
               width="1320"
               height="500"
               referrerPolicy="no-referrer-when-downgrade"

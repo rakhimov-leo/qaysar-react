@@ -16,6 +16,12 @@
   justify-content: space-between;
 }
 
+.sns-context img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
 .foot-category-title {
   width: 106px;
   font-family: "Poppins";
