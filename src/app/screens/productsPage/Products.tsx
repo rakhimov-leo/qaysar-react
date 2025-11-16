@@ -96,7 +96,7 @@ export default function Products(props: ProductsProps) {
       <Container>
         <Stack flexDirection={"column"} alignItems={"center"}>
           <Stack className={"avatar-big-box"} direction={"row"}>
-            <Box className={"title-txt"}>Burak Restaurant</Box>
+            <Box className={"title-txt"}>Qaysar-Qaynar Restaurant</Box>
             <Stack direction="row" className="search-container">
               <input
                 type="search"

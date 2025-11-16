@@ -12,6 +12,7 @@ import { Messages, serverApi } from "../../../lib/config";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { useGlobals } from "../../hooks/useGlobals";
 import OrderService from "../../services/OrderService";
+import styled from "styled-components";
 
 interface BasketProps {
   cartItems: CartItem[];
@@ -20,6 +21,78 @@ interface BasketProps {
   onDelete: (item: CartItem) => void;
   onDeleteAll: () => void;
 }
+
+/** Styled Components **/
+const BasketWrapper = styled(Stack)`
+  width: 400px;
+  padding: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+`;
+
+const BasketItem = styled(Box)`
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+`;
+
+const ProductImage = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 12px;
+`;
+
+const ProductInfo = styled(Box)`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProductName = styled.span`
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+`;
+
+const ProductPrice = styled.span`
+  color: #555;
+  font-size: 14px;
+`;
+
+const QuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background-color: #1976d2;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #115293;
+    }
+  }
+`;
 
 export default function Basket(props: BasketProps) {
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
@@ -35,13 +108,10 @@ export default function Basket(props: BasketProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  /** HANDLERS **/
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   const proccedOrderHandler = async () => {
     try {
@@ -52,7 +122,6 @@ export default function Basket(props: BasketProps) {
       await order.createOrder(cartItems);
 
       onDeleteAll();
-
       setOrderBuilder(new Date());
       history.push("/orders");
     } catch (err) {
@@ -62,7 +131,7 @@ export default function Basket(props: BasketProps) {
   };
 
   return (
-    <Box className={"hover-line"}>
+    <Box>
       <IconButton
         aria-label="cart"
         id="basic-button"
@@ -72,112 +141,79 @@ export default function Basket(props: BasketProps) {
         onClick={handleClick}
       >
         <Badge badgeContent={cartItems.length} color="secondary">
-          <img src={"/icons/shopping-cart.svg"} />
+          <ShoppingCartIcon />
         </Badge>
       </IconButton>
+
       <Menu
         anchorEl={anchorEl}
-        id="account-menu"
+        id="basket-menu"
         open={open}
         onClose={handleClose}
-        // onClick={handleClose}
         PaperProps={{
-          elevation: 0,
           sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
+            width: 450,
+            maxWidth: "90vw",
+            p: 1,
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Stack className={"basket-frame"}>
-          <Box className={"all-check-box"}>
-            {cartItems.length === 0 ? (
-              <div>Cart is empty!</div>
-            ) : (
-              <Stack flexDirection={"row"}>
-                <div>Cart Products:</div>
-                <DeleteForeverIcon
-                  sx={{ ml: "5px", cursor: "pointer" }}
-                  color={"primary"}
-                  onClick={() => onDeleteAll()}
-                />
-              </Stack>
+        <BasketWrapper>
+          <Stack direction="row" justifyContent="space-between" mb={2}>
+            <strong>My Cart</strong>
+            {cartItems.length > 0 && (
+              <DeleteForeverIcon
+                color="primary"
+                sx={{ cursor: "pointer" }}
+                onClick={() => onDeleteAll()}
+              />
             )}
-          </Box>
+          </Stack>
 
-          <Box className={"orders-main-wrapper"}>
-            <Box className={"orders-wrapper"}>
-              {cartItems.map((item: CartItem) => {
-                const imagePath = `${serverApi}/${item.image}`;
-                return (
-                  <Box className={"basket-info-box"} key={item._id}>
-                    <div className={"cancel-btn"}>
-                      <CancelIcon
-                        color={"primary"}
-                        onClick={() => onDelete(item)}
-                      />
-                    </div>
-                    <img src={imagePath} className={"product-img"} />
-                    <span className={"product-name"}>{item.name}</span>
-                    <p className={"product-price"}>
-                      ${item.price} x {item.quantity}{" "}
-                    </p>
-                    <Box sx={{ minWidth: 120 }}>
-                      <div className="col-2">
-                        <button
-                          onClick={() => onRemove(item)}
-                          className="remove"
-                        >
-                          -
-                        </button>{" "}
-                        <button onClick={() => onAdd(item)} className="add">
-                          +
-                        </button>
-                      </div>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          </Box>
-          {cartItems.length !== 0 ? (
-            <Box className={"basket-order"}>
-              <span className={"price"}>
+          {cartItems.length === 0 && <div>Cart is empty!</div>}
+
+          {cartItems.map((item: CartItem) => {
+            const imagePath = `${serverApi}/${item.image}`;
+            return (
+              <BasketItem key={item._id}>
+                <CancelIcon
+                  color="primary"
+                  sx={{ cursor: "pointer", mr: 1 }}
+                  onClick={() => onDelete(item)}
+                />
+                <ProductImage src={imagePath} alt={item.name} />
+                <ProductInfo>
+                  <ProductName>{item.name}</ProductName>
+                  <ProductPrice>
+                    ${item.price} x {item.quantity}
+                  </ProductPrice>
+                  <QuantityControls>
+                    <button onClick={() => onRemove(item)}>-</button>
+                    <button onClick={() => onAdd(item)}>+</button>
+                  </QuantityControls>
+                </ProductInfo>
+              </BasketItem>
+            );
+          })}
+
+          {cartItems.length !== 0 && (
+            <Stack direction="row" justifyContent="space-between" mt={2}>
+              <span>
                 Total: ${totalPrice} ({itemsPrice} + {shippingCost})
               </span>
               <Button
+                variant="contained"
+                color="primary"
                 onClick={proccedOrderHandler}
                 startIcon={<ShoppingCartIcon />}
-                variant={"contained"}
               >
                 Order
               </Button>
-            </Box>
-          ) : (
-            ""
+            </Stack>
           )}
-        </Stack>
+        </BasketWrapper>
       </Menu>
     </Box>
   );

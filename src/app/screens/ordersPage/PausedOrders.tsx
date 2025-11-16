@@ -1,7 +1,6 @@
 import React from "react";
 import TabPanel from "@mui/lab/TabPanel";
-import { Box, Stack } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Box, Stack, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 import { retrievePausedOrders } from "./selector";
@@ -13,12 +12,69 @@ import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import { useGlobals } from "../../hooks/useGlobals";
 import OrderService from "../../services/OrderService";
+import { styled } from "@mui/material/styles"; // ✅ Styled qo‘shildi
 
 // ** REDUX SLICE & SELECTOR  **//
 const pausedOrdersRetriever = createSelector(
   retrievePausedOrders,
   (pausedOrders) => ({ pausedOrders })
 );
+
+// ✅ Styled components
+const OrderCard = styled(Box)(({ theme }) => ({
+  backgroundColor: "#fff",
+  borderRadius: 12,
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  marginBottom: theme.spacing(3),
+  padding: theme.spacing(2),
+  transition: "transform 0.2s, box-shadow 0.2s",
+  "&:hover": {
+    transform: "translateY(-3px)",
+    boxShadow: "0 6px 16px rgba(0,0,0,0.12)",
+  },
+}));
+
+const OrderItemsContainer = styled(Box)(({ theme }) => ({
+  maxHeight: 300,
+  overflowY: "auto",
+  marginBottom: theme.spacing(2),
+}));
+
+const OrderItemRow = styled(Stack)(({ theme }) => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: theme.spacing(1),
+}));
+
+const DishImg = styled("img")(({ theme }) => ({
+  width: 80,
+  height: 80,
+  borderRadius: 8,
+  objectFit: "cover",
+  marginRight: theme.spacing(2),
+}));
+
+const TotalBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(2),
+  borderTop: "1px solid #eee",
+  marginTop: theme.spacing(2),
+  borderRadius: 8,
+  backgroundColor: "#f9f9f9",
+  fontWeight: 600,
+}));
+
+const ActionButtons = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "flex-end",
+  marginTop: theme.spacing(2),
+  gap: theme.spacing(1),
+}));
 
 interface PausedOrdersProps {
   setValue: (input: string) => void;
@@ -28,8 +84,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const { setValue } = props;
   const { authMember, setOrderBuilder } = useGlobals();
   const { pausedOrders } = useSelector(pausedOrdersRetriever);
-
-  //** HANDLERS **/
 
   const deleteOrderHandler = async (e: T) => {
     try {
@@ -55,7 +109,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const processOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
-      //PAYMENT PROCESS
 
       const orderId = e.target.value;
       const input: OrderUpdateInput = {
@@ -80,86 +133,71 @@ export default function PausedOrders(props: PausedOrdersProps) {
 
   return (
     <TabPanel value={"1"}>
-      <Stack>
-        {pausedOrders?.map((order: Order) => {
-          return (
-            <Box key={order._id} className={"order-main-box"}>
-              <Box className="order-box-scroll">
-                {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
-                    (ele: Product) => item.productId === ele._id
-                  )[0];
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  console.log(imagePath);
-                  return (
-                    <Box key={item._id} className={"order-name-price"}>
-                      <img src={imagePath} className={"order-dish-img"} />
-                      <Stack
-                        sx={{
-                          width: 650,
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <p className={"title-dish"}>{product.productName}</p>
-                        <Box className={"price-box"}>
-                          <p>${item.itemPrice}</p>
-                          <img src={"/icons/close.svg"} />
-                          <p>{item.itemQuantity}</p>
-                          <img src={"/icons/pause.svg"} />
-                          <p style={{ marginLeft: "15px" }}>
-                            ${item.itemQuantity * item.itemPrice}
-                          </p>
-                        </Box>
-                      </Stack>
+      <Stack spacing={2}>
+        {pausedOrders?.map((order: Order) => (
+          <OrderCard key={order._id}>
+            <OrderItemsContainer>
+              {order?.orderItems?.map((item: OrderItem) => {
+                const product: Product = order.productData.find(
+                  (ele: Product) => item.productId === ele._id
+                )!;
+                const imagePath = `${serverApi}/${product.productImages[0]}`;
+                return (
+                  <OrderItemRow key={item._id}>
+                    <DishImg src={imagePath} />
+                    <Stack sx={{ flex: 1, justifyContent: "center" }}>
+                      <p className={"title-dish"}>{product.productName}</p>
+                    </Stack>
+                    <Box
+                      className={"price-box"}
+                      sx={{ display: "flex", gap: 1, alignItems: "center" }}
+                    >
+                      <p>${item.itemPrice}</p>
+                      <img src={"/icons/close.svg"} alt="" />
+                      <p>{item.itemQuantity}</p>
+                      <img src={"/icons/pause.svg"} alt="" />
+                      <p style={{ marginLeft: "15px" }}>
+                        ${item.itemQuantity * item.itemPrice}
+                      </p>
                     </Box>
-                  );
-                })}
-              </Box>
+                  </OrderItemRow>
+                );
+              })}
+            </OrderItemsContainer>
 
-              <Box className={"total-price-box"}>
-                <Box className={"box-total"}>
-                  <p>Product price</p>
-                  <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img src={"/icons/plus.svg"} style={{ marginLeft: "20px" }} />
-                  <p>${order.orderDelivery}</p>
-                  <img
-                    src={"/icons/pause.svg"}
-                    style={{ marginLeft: "20px" }}
-                  />
-                  <p>Total</p>
-                  <p>${order.orderTotal}</p>
-                </Box>
-                <Button
-                  value={order._id}
-                  variant="contained"
-                  color="secondary"
-                  className={"cancel-button"}
-                  onClick={deleteOrderHandler}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  value={order._id}
-                  variant="contained"
-                  className={"pay-button"}
-                  onClick={processOrderHandler}
-                >
-                  Payment
-                </Button>
-              </Box>
-            </Box>
-          );
-        })}
+            {/* ✅ Total box dizayni yangilandi */}
+            <TotalBox>
+              <p>
+                Product: ${order.orderTotal - order.orderDelivery} + Delivery: $
+                {order.orderDelivery}
+              </p>
+              <p>Total: ${order.orderTotal}</p>
+            </TotalBox>
+
+            <ActionButtons>
+              <Button
+                value={order._id}
+                variant="contained"
+                color="secondary"
+                onClick={deleteOrderHandler}
+              >
+                Cancel
+              </Button>
+              <Button
+                value={order._id}
+                variant="contained"
+                color="primary"
+                onClick={processOrderHandler}
+              >
+                Payment
+              </Button>
+            </ActionButtons>
+          </OrderCard>
+        ))}
 
         {!pausedOrders ||
           (pausedOrders.length === 0 && (
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justify-content={"center"}
-            >
+            <Box display={"flex"} justifyContent={"center"} mt={5}>
               <img
                 src="/icons/noimage-list.svg"
                 style={{ width: 300, height: 300 }}
