@@ -24,6 +24,7 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: row;
   width: 800px;
+  height: 500px;
   border-radius: 15px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.95);
@@ -50,7 +51,7 @@ const ModalVideo = styled.video`
   width: 50%;
   height: 100%;
   object-fit: cover;
-
+  display: block;
   @media (max-width: 900px) {
     width: 100%;
     height: 200px;

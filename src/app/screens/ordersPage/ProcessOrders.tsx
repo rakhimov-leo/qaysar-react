@@ -1,54 +1,73 @@
 import React from "react";
 import TabPanel from "@mui/lab/TabPanel";
-import { Box, Stack } from "@mui/material";
-import Button from "@mui/material/Button";
-import moment from "moment";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 import { retrieveProcessOrders } from "./selector";
-import { Messages, serverApi } from "../../../lib/config";
-import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
+import { serverApi, Messages } from "../../../lib/config";
+import { Order, OrderItem } from "../../../lib/types/order";
 import { Product } from "../../../lib/types/product";
 import { useGlobals } from "../../hooks/useGlobals";
-import { T } from "../../../lib/types/common";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { styled } from "@mui/material/styles";
+import moment from "moment";
 
-// ** REDUX SLICE & SELECTOR  **//
+// ✅ REDUX SELECTOR
 const processOrdersRetriever = createSelector(
   retrieveProcessOrders,
   (processOrders) => ({ processOrders })
 );
 
-interface ProcessOrdersProps {
-  setValue: (input: string) => void;
-}
+// ✅ Styled components (PausedOrders dizayniga mos)
+const OrderCard = styled(Box)(({ theme }) => ({
+  backgroundColor: "#fff",
+  borderRadius: 12,
+  padding: theme.spacing(2),
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  marginBottom: theme.spacing(2),
+}));
 
-export default function ProcessOrders(props: ProcessOrdersProps) {
-  const { setValue } = props;
+const OrderTitle = styled(Typography)({
+  fontWeight: 600,
+  fontSize: "16px",
+});
+
+const OrderStatusLabel = styled(Box)<{ status: string }>(({ status }) => ({
+  padding: "2px 8px",
+  borderRadius: 8,
+  fontWeight: 600,
+  fontSize: "12px",
+  color: "#fff",
+  backgroundColor:
+    status === "PROCESS"
+      ? "#1976d2"
+      : status === "PAUSE"
+        ? "#ff9800"
+        : "#4caf50",
+}));
+
+const ProcessOrders: React.FC<{ setValue: (val: string) => void }> = ({
+  setValue,
+}) => {
   const { authMember, setOrderBuilder } = useGlobals();
-
   const { processOrders } = useSelector(processOrdersRetriever);
 
-  //** HANDLERS **/
-
-  const finishOrderHandler = async (e: T) => {
+  const finishOrderHandler = async (orderId: string) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
-      //PAYMENT PROCESS
 
-      const orderId = e.target.value;
-      const input: OrderUpdateInput = {
-        orderId: orderId,
+      const input = {
+        orderId,
         orderStatus: OrderStatus.FINISH,
       };
 
       const confirmation = window.confirm("Have you received your order?");
       if (confirmation) {
-        const order = new OrderService();
-        await order.updateOrder(input);
-        setValue("3");
+        const orderService = new OrderService();
+        await orderService.updateOrder(input);
+        setValue("3"); // Finished Orders tab
         setOrderBuilder(new Date());
       }
     } catch (err) {
@@ -58,87 +77,87 @@ export default function ProcessOrders(props: ProcessOrdersProps) {
   };
 
   return (
-    <TabPanel value={"2"}>
+    <TabPanel value="2">
       <Stack>
-        {processOrders?.map((order: Order) => {
-          return (
-            <Box key={order._id} className={"order-main-box"}>
-              <Box className="order-box-scroll">
-                {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
-                    (ele: Product) => item.productId === ele._id
-                  )[0];
+        {processOrders && processOrders.length > 0 ? (
+          processOrders.map((order: Order) => (
+            <OrderCard key={order._id}>
+              <OrderTitle>{`Order #${order._id}`}</OrderTitle>
+              <OrderStatusLabel status="PROCESS">IN PROCESS</OrderStatusLabel>
+
+              <Box sx={{ mt: 2 }}>
+                {order.orderItems?.map((item: OrderItem) => {
+                  const product: Product = order.productData.find(
+                    (p: Product) => p._id === item.productId
+                  )!;
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
-                    <Box key={item._id} className={"order-name-price"}>
-                      <img src={imagePath} className={"order-dish-img"} />
-                      <Stack
-                        sx={{
-                          width: 650,
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <p className={"title-dish"}>{product.productName}</p>
-                        <Box className={"price-box"}>
-                          <p>${item.itemPrice}</p>
-                          <img src={"/icons/close.svg"} />
-                          <p>{item.itemQuantity}</p>
-                          <img src={"/icons/pause.svg"} />
-                          <p style={{ marginLeft: "15px" }}>
-                            ${item.itemQuantity * item.itemPrice}
-                          </p>
-                        </Box>
-                      </Stack>
+                    <Box
+                      key={item._id}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 1,
+                      }}
+                    >
+                      <img
+                        src={imagePath}
+                        alt={product.productName}
+                        style={{ width: 50, height: 50, borderRadius: 8 }}
+                      />
+                      <Typography>{product.productName}</Typography>
+                      <Typography>
+                        {item.itemQuantity} x ${item.itemPrice} = $
+                        {item.itemQuantity * item.itemPrice}
+                      </Typography>
                     </Box>
                   );
                 })}
               </Box>
 
-              <Box className={"total-price-box"}>
-                <Box className={"box-total"}>
-                  <p>Product price</p>
-                  <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img src={"/icons/plus.svg"} style={{ marginLeft: "20px" }} />
-                  <p>delivery cost</p>
-                  <p>${order.orderDelivery}</p>
-                  <img
-                    src={"/icons/pause.svg"}
-                    style={{ marginLeft: "20px" }}
-                  />
-                  <p>Total</p>
-                  <p>${order.orderTotal}</p>
-                </Box>
-                <p className={"data-compl"}>
-                  {moment().format("YY-MM-DD HH:mm")}
-                </p>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mt: 2,
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body2">
+                  Total: ${order.orderTotal}
+                </Typography>
+                <Typography variant="caption">
+                  {moment(order.createdAt).format("YY-MM-DD HH:mm")}
+                </Typography>
                 <Button
-                  value={order._id}
-                  className={"verify-button"}
-                  onClick={finishOrderHandler}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => finishOrderHandler(order._id)}
                 >
                   Verify to Fulfill
                 </Button>
               </Box>
-            </Box>
-          );
-        })}
-
-        {!processOrders ||
-          (processOrders.length === 0 && (
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justify-content={"center"}
-            >
-              <img
-                src="/icons/noimage-list.svg"
-                style={{ width: 300, height: 300 }}
-              />
-            </Box>
-          ))}
+            </OrderCard>
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 5,
+            }}
+          >
+            <img
+              src="/icons/noimage-list.svg"
+              alt="No orders"
+              style={{ width: 300, height: 300 }}
+            />
+          </Box>
+        )}
       </Stack>
     </TabPanel>
   );
-}
+};
+
+export default ProcessOrders;

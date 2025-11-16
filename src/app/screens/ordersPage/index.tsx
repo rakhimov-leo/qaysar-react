@@ -244,7 +244,7 @@ export default function OrdersPage() {
               <Box>CVV: 010</Box>
             </CardDetails>
 
-            <CustomerName>Justin Robertson</CustomerName>
+            <CustomerName>Aladin Hayitov</CustomerName>
 
             <CardsRow>
               <img
