@@ -9,4 +9,19 @@ npm i yarn -g
 yarn global add serve
 yarn
 yarn run build
-pm2 start "yarn run start:prod" --name=QAYSAR-REACT
+
+# Stop existing process if running
+pm2 stop QAYSAR-REACT 2>/dev/null || true
+pm2 delete QAYSAR-REACT 2>/dev/null || true
+
+# Set port (default 3001 to avoid conflicts with other projects)
+PORT=${PORT:-3001}
+
+# Start using ecosystem config or direct command
+if [ -f ecosystem.config.js ]; then
+  PORT=$PORT pm2 start ecosystem.config.js
+else
+  pm2 start npx --name QAYSAR-REACT -- serve -s build -l $PORT
+fi
+
+pm2 save
