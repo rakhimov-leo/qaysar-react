@@ -1,11 +1,12 @@
+const path = require('path');
 const port = process.env.PORT || '3001';
 
 module.exports = {
   apps: [
     {
       name: 'QAYSAR-REACT',
-      script: 'npx',
-      args: ['--yes', 'serve', '-s', 'build', '-l', port],
+      script: path.join(__dirname, 'start-server.sh'),
+      interpreter: 'bash',
       instances: 1,
       exec_mode: 'fork',
       autorestart: true,

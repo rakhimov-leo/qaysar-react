@@ -17,6 +17,9 @@ pm2 delete QAYSAR-REACT 2>/dev/null || true
 # Set port (default 3001 to avoid conflicts with other projects)
 PORT=${PORT:-3001}
 
+# Make start-server.sh executable
+chmod +x start-server.sh 2>/dev/null || true
+
 # Start using ecosystem config or direct command
 if [ -f ecosystem.config.js ]; then
   PORT=$PORT pm2 start ecosystem.config.js
