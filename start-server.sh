@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Get port from environment variable or use default 3001
-PORT=${PORT:-3001}
+# Get port from environment variable or use default 3019
+PORT=${PORT:-3019}
 
 # Get the directory where this script is located
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -22,4 +22,8 @@ else
   echo "Error: neither serve nor npx found!"
   exit 1
 fi
+
+
+
+
 

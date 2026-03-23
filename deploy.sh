@@ -14,8 +14,8 @@ yarn run build
 pm2 stop QAYSAR-REACT 2>/dev/null || true
 pm2 delete QAYSAR-REACT 2>/dev/null || true
 
-# Set port (default 3001 to avoid conflicts with other projects)
-PORT=${PORT:-3001}
+# Set port (default 3019 to avoid conflicts with other projects)
+PORT=${PORT:-3019}
 
 # Make start-server.sh executable
 chmod +x start-server.sh 2>/dev/null || true
